@@ -123,7 +123,7 @@
   
   Object.defineProperty(HTMLElement.prototype, 'innerHTML', {
     set: function (hotmail){
-      _c.warn('innerHTML is being called')
+      _c.warn(`${this}.innerHTML is being called`)
       elInnerHTML.set.call(this, val)
     },
 
