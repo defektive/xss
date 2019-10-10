@@ -118,8 +118,8 @@
     }
   });
   
-  let elProto = Object.getPrototypeOf(HTMLElement);
-  let elInnerHTML = Object.getOwnPropertyDescriptor(elProto, 'innerHTML');
+  const elProto = Object.getPrototypeOf(HTMLElement);
+  const elInnerHTML = Object.getOwnPropertyDescriptor(elProto, 'innerHTML');
   
   Object.defineProperty(HTMLElement.prototype, 'innerHTML', {
     set: function (hotmail){
