@@ -118,20 +118,18 @@
     }
   });
   
-  if (!window.elProto) {
-    window.elProto = Object.getPrototypeOf(HTMLElement);
-    window.elInnerHTML = Object.getOwnPropertyDescriptor(window.elProto, 'innerHTML');
-    window.relInnerHTML = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'innerHTML');
 
     Object.defineProperty(HTMLElement.prototype, 'innerHTML', {
       set: function (hotmail){
+        let elProto = Object.getPrototypeOf(Element);
+        let elInnerHTML = Object.getOwnPropertyDescriptor(elProto, 'innerHTML');
         _c.warn(`${this}.innerHTML is being called`);
-        window.relInnerHTML.set.call(this, val);
+        elInnerHTML.set.call(this, val);
       },
 
       get: function () {
         window.relInnerHTML.get.call(this);
       }
     });
-  }
+  
 })(window);
