@@ -121,15 +121,16 @@
   if (!window.elProto) {
     window.elProto = Object.getPrototypeOf(HTMLElement);
     window.elInnerHTML = Object.getOwnPropertyDescriptor(window.elProto, 'innerHTML');
+    window.relInnerHTML = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'innerHTML');
 
     Object.defineProperty(HTMLElement.prototype, 'innerHTML', {
       set: function (hotmail){
-        _c.warn(`${this}.innerHTML is being called`)
-        window.elInnerHTML.set.call(this, val)
+        _c.warn(`${this}.innerHTML is being called`);
+        window.relInnerHTML.set.call(this, val);
       },
 
       get: function () {
-        window.elInnerHTML.get.call(this)
+        window.relInnerHTML.get.call(this);
       }
     });
   }
