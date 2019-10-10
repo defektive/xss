@@ -118,7 +118,8 @@
     }
   });
 
-  const ogInnerHTML = HTMLElement.prototype.innerHTML;
+  
+  //const ogInnerHTML = HTMLElement.prototype.innerHTML;
   Object.defineProperty(HTMLElement.prototype, 'innerHTML', {
     set: function (hotmail){
       debugger;
