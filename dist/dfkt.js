@@ -118,17 +118,17 @@
     }
   });
   
-  const elProto = Object.getPrototypeOf(HTMLElement);
-  const elInnerHTML = Object.getOwnPropertyDescriptor(elProto, 'innerHTML');
+  window.elProto = Object.getPrototypeOf(HTMLElement);
+  window.elInnerHTML = Object.getOwnPropertyDescriptor(window.elProto, 'innerHTML');
   
   Object.defineProperty(HTMLElement.prototype, 'innerHTML', {
     set: function (hotmail){
       _c.warn(`${this}.innerHTML is being called`)
-      elInnerHTML.set.call(this, val)
+      window.elInnerHTML.set.call(this, val)
     },
 
     get: function () {
-      elInnerHTML.get.call(this)
+      window.elInnerHTML.get.call(this)
     }
 
   });
