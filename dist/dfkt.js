@@ -117,17 +117,18 @@
       return _random['_dfkt_new_webpackFunction'];
     }
   });
-
   
-  //const ogInnerHTML = HTMLElement.prototype.innerHTML;
+  let elProto = Object.getPrototypeOf(HTMLElement);
+  let elInnerHTML = Object.getOwnPropertyDescriptor(ownObjectProto, 'innerHTML');
+  
   Object.defineProperty(HTMLElement.prototype, 'innerHTML', {
     set: function (hotmail){
       debugger;
-      this._inn = hotmail
+      elInnerHTML.set.call(this, val)
     },
 
     get: function () {
-      return this._inn
+      elInnerHTML.get.call(this)
     }
 
   });
