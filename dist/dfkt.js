@@ -117,19 +117,79 @@
       return _random['_dfkt_new_webpackFunction'];
     }
   });
-  
 
-    Object.defineProperty(HTMLElement.prototype, 'innerHTML', {
-      set: function (hotmail){
-        let elProto = Object.getPrototypeOf(Element);
-        let elInnerHTML = Object.getOwnPropertyDescriptor(elProto, 'innerHTML');
-        _c.warn(`${this}.innerHTML is being called`);
-        elInnerHTML.set.call(this, val);
-      },
+  window._DfktHooks = (function _dfktHooks() {
+    let _dfktOrgSetters = {};
 
-      get: function () {
-        window.relInnerHTML.get.call(this);
+    const {
+      isPrototypeOf,
+    } = Object.prototype;
+
+    /**
+     * Returns the key name for caching original setters.
+     * @param {!Object} object The object of the to-be-wrapped property.
+     * @param {string} name The name of the property.
+     * @return {string} Key name.
+     * @private
+     */
+    function getKey_(object, name) {
+      const ctrName = '' + (
+        object.constructor.name ?
+        object.constructor.name :
+        object.constructor);
+      return ctrName + '-' + name;
+    }
+
+    return {
+      wrapSetter: function wrapSetter(object, name, type, descriptorObject = undefined) {
+        if (descriptorObject && !isPrototypeOf.call(descriptorObject, object)) {
+          throw new Error('Invalid prototype chain');
+        }
+
+        let useObject = descriptorObject || object;
+        let descriptor;
+        let originalSetter;
+        const stopAt = Object.getPrototypeOf(Node.prototype);
+
+        // Find the descriptor on the object or its prototypes, stopping at Node.
+        do {
+          descriptor = Object.getOwnPropertyDescriptor(useObject, name);
+          originalSetter = /** @type {function(*):*} */ (descriptor ?
+              descriptor.set : null);
+          if (!originalSetter) {
+            useObject = Object.getPrototypeOf(useObject) || stopAt;
+          }
+        } while (!(originalSetter || useObject === stopAt || !useObject));
+
+        if (!(originalSetter instanceof Function)) {
+          throw new TypeError(
+              'No setter for property ' + name + ' on object' + object);
+        }
+
+        const key = getKey_(object, name);
+        if (_dfktOrgSetters[key]) {
+          throw new Error(
+              `DFKT Double installation detected: ${key} ${name}`);
+        }
+        const wrappedSetter = function(value) {
+          console.log(`DFKT HOOK: ${name}`, this)
+          return Reflect.apply(originalSetter, this, [value]);
+        };
+
+        if (useObject === object) {
+          Object.defineProperty(object, name, {
+            set: wrappedSetter,
+          });
+        } else {
+          Object.defineProperty(object, name, {
+            set: wrappedSetter,
+            get: descriptor.get,
+            configurable: true, // This can get uninstalled, we need configurable: true
+          });
+        }
+        _dfktOrgSetters[key] = originalSetter;
       }
-    });
-  
+    }
+  })()
+  _DfktHooks.wrapSetter(HTMLElement.prototype, 'innerHTML')
 })(window);
