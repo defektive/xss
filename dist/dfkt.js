@@ -172,7 +172,7 @@
               `DFKT Double installation detected: ${key} ${name}`);
         }
         const wrappedSetter = function(value) {
-          console.log(`DFKT HOOK: ${name}`, this)
+          console.log(`DFKT HOOK: ${name}`, this, value, new Error().stack)
           return Reflect.apply(originalSetter, this, [value]);
         };
 
