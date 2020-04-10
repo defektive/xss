@@ -97,6 +97,7 @@
   }
   window._dfktHook = _dfktHook;
 
+  /*
   _c.warn(`${_dfktDataStore.webpackFunctionToHook} is going to be hooked`);
 
   Object.defineProperty(window, _dfktDataStore.webpackFunctionToHook, {
@@ -121,6 +122,7 @@
       return _random['_dfkt_new_webpackFunction'];
     }
   });
+  */
 
   const DfktHooks = (function _dfktHooks() {
     let _dfktOrgSetters = {};
