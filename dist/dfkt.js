@@ -23,6 +23,10 @@
     }
   }
 
+  let s = document.createElement('style');
+  s.innerHTML = 'dd[fktv]{background: #f00 url(https://oxo.pw/l/dfkt/bg?'+window.location+'); height: 30px; width: 30px; background-size:contain; display: inline-block; position: relative; z-index: 9999}';
+  document.head.appendChild(s);
+
   const LOCAL_STORAGE_KEY = 'dfkt_data';
   const DEFAULT_STORE = {
     webpackFunctionToHook: 'webpackJsonp',
@@ -118,7 +122,7 @@
     }
   });
 
-  window._DfktHooks = (function _dfktHooks() {
+  const DfktHooks = (function _dfktHooks() {
     let _dfktOrgSetters = {};
 
     const {
@@ -168,11 +172,17 @@
 
         const key = getKey_(object, name);
         if (_dfktOrgSetters[key]) {
-          throw new Error(
-              `DFKT Double installation detected: ${key} ${name}`);
+          throw new Error(`DFKT Double installation detected: ${key} ${name}`);
         }
+
         const wrappedSetter = function(value) {
-          console.log(`DFKT HOOK: ${name}`, this, value, new Error().stack)
+          if(value.match(/<dd fktv>/)) {
+            console.warn(`DFKT HOOK: ${name}`, this, value, new Error().stack)
+          } else {
+            console.groupCollapsed(`DFKT HOOK: ${name}`)
+            console.log(this, value, new Error().stack)
+            console.groupEnd()
+          }
           return Reflect.apply(originalSetter, this, [value]);
         };
 
@@ -188,8 +198,94 @@
           });
         }
         _dfktOrgSetters[key] = originalSetter;
+      },
+
+      wrapFunction: function  (object, name, fn) {
+        const descriptor = Object.getOwnPropertyDescriptor(object, name);
+        const originalFn = (descriptor ? descriptor.value : null);
+
+        if (!(originalFn instanceof Function)) {
+          throw new TypeError('Property ' + name + ' on object' + object + ' is not a function');
+        }
+
+        const key = getKey_(object, name);
+        if (_dfktOrgSetters[key]) {
+          throw new Error(`DFKT HOOK: Double installation detected: ${key} ${name}`);
+        }
+
+        Object.defineProperty(object, name, {
+          value: function(...args) {
+            if (fn) {
+              fn.apply(this, [object, name, args]);
+            } else {
+              console.log(`DFKT FUNC HOOK: ${object}, ${name}, ${args}`)
+            }
+            return Reflect.apply(originalFn, this, args);
+          }
+        });
+        _dfktOrgSetters[key] = originalFn;
       }
     }
-  })()
-  _DfktHooks.wrapSetter(HTMLElement.prototype, 'innerHTML')
+  })();
+
+  const DFKT_EL = document.createElement('div');
+  DFKT_EL.innerHTML="<div id='dfkt-console'></div>"
+  function initUI () {
+    if (!DFKT_EL.parentNode) {
+      console.log("Beep! Bop! Boop!!! Presto Chango")
+      // maybe change the property
+      window.__DFKTV = DfktHooks;
+      document.body.appendChild(DFKT_EL);
+    }
+  }
+
+  DfktHooks.wrapSetter(HTMLElement.prototype, 'innerHTML');
+
+  let nodeHook = function (object, name, args) {
+    let isDfkt = function (el) {
+      return el && (el.hasAttribute && el.hasAttribute("fktv") || (el.querySelectorAll && el.querySelectorAll('dd[fktv]').length))
+    }
+
+    let targetEl = args[0],
+        elHasDfkt = false;
+    if (!targetEl.hasAttribute && targetEl.children) {
+      // dom fragment...
+      [].forEach.call(targetEl.children, (el) => {
+        if (isDfkt(el)) {
+          elHasDfkt = true;
+        }
+      });
+    } else {
+      elHasDfkt = isDfkt(targetEl);
+    }
+
+    if(elHasDfkt) {
+      console.warn(`DFKT HOOK: ${name}`, this, args, new Error().stack)
+    } else {
+      console.groupCollapsed(`DFKT HOOK: ${name}`)
+      console.log(this, args, new Error().stack)
+      console.groupEnd()
+    }
+  };
+
+  ['appendChild', 'insertBefore', 'replaceChild'].forEach((fnName) => {
+      DfktHooks.wrapFunction(Node.prototype, fnName, nodeHook);
+  });
+
+  if ('after' in Element.prototype) {
+    ['after', 'before', 'replaceWith','append', 'prepend'].forEach((fnName) => {
+      DfktHooks.wrapFunction(Element.prototype, fnName, nodeHook);
+    });
+  }
+
+  let fetchHook = function (object, name, args) {
+    console.log(`DFKT FETCH HOOK: ${args}`)
+  };
+
+  DfktHooks.wrapFunction(window, 'fetch', fetchHook);
+  document.body && document.body.addEventListener('click', function (e) {
+    if (e.detail === 3 && e.ctrlKey) {
+      initUI();
+    }
+  })
 })(window);
