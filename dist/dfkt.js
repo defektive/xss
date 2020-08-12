@@ -181,9 +181,7 @@
           if(value.match(/<dd fktv>/)) {
             console.warn(`DFKT HOOK: ${name}`, this, value, new Error().stack)
           } else {
-            console.groupCollapsed(`DFKT HOOK: ${name}`)
-            console.log(this, value, new Error().stack)
-            console.groupEnd()
+            console.log(`DFKT HOOK: ${name}`, this, value, new Error().stack)
           }
           return Reflect.apply(originalSetter, this, [value]);
         };
@@ -264,9 +262,7 @@
     if(elHasDfkt) {
       console.warn(`DFKT HOOK: ${name}`, this, args, new Error().stack)
     } else {
-      console.groupCollapsed(`DFKT HOOK: ${name}`)
-      console.log(this, args, new Error().stack)
-      console.groupEnd()
+      console.log(`DFKT HOOK: ${name}`, this, args, new Error().stack)
     }
   };
 
