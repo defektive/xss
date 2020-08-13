@@ -281,6 +281,17 @@
   };
 
   DfktHooks.wrapFunction(window, 'fetch', fetchHook);
+  
+  let postMessageHook = function (object, name, args) {
+    console.log(`DFKT POSTMESSAGE HOOK: ${args}`)
+  };
+
+  DfktHooks.wrapFunction(window, 'postMessage', postMessage);
+  
+  window.addEventListener('message', function (e) {
+    console.log('message received', e)
+  });
+  
   document.body && document.body.addEventListener('click', function (e) {
     if (e.detail === 3 && e.ctrlKey) {
       initUI();
