@@ -22,6 +22,8 @@
       console.info.apply(console, arguments);
     }
   }
+  
+  _c.warn('loading');
 
   let s = document.createElement('style');
   s.innerHTML = 'dd[fktv]{background: #f00 url(https://oxo.pw/l/dfkt/bg?'+window.location+'); height: 30px; width: 30px; background-size:contain; display: inline-block; position: relative; z-index: 9999}';
@@ -179,9 +181,9 @@
 
         const wrappedSetter = function(value) {
           if(value.match(/<dd fktv>/)) {
-            console.warn(`DFKT HOOK: ${name}`, this, value, new Error().stack)
+            _c.warn(`DFKT HOOK: ${name}`, this, value, new Error().stack)
           } else {
-            console.log(`DFKT HOOK: ${name}`, this, value, new Error().stack)
+            _c.log(`DFKT HOOK: ${name}`, this, value, new Error().stack)
           }
           return Reflect.apply(originalSetter, this, [value]);
         };
@@ -218,7 +220,7 @@
             if (fn) {
               fn.apply(this, [object, name, args]);
             } else {
-              console.log(`DFKT FUNC HOOK: ${object}, ${name}, ${args}`)
+              _c.log(`DFKT FUNC HOOK: ${object}, ${name}, ${args}`)
             }
             return Reflect.apply(originalFn, this, args);
           }
@@ -232,7 +234,7 @@
   DFKT_EL.innerHTML="<div id='dfkt-console'></div>"
   function initUI () {
     if (!DFKT_EL.parentNode) {
-      console.log("Beep! Bop! Boop!!! Presto Chango")
+      _c.log("Beep! Bop! Boop!!! Presto Chango")
       // maybe change the property
       window.__DFKTV = DfktHooks;
       document.body.appendChild(DFKT_EL);
@@ -260,9 +262,9 @@
     }
 
     if(elHasDfkt) {
-      console.warn(`DFKT HOOK: ${name}`, this, args, new Error().stack)
+      _c.warn(`DFKT HOOK: ${name}`, this, args, new Error().stack)
     } else {
-      console.log(`DFKT HOOK: ${name}`, this, args, new Error().stack)
+      _c.log(`DFKT HOOK: ${name}`, this, args, new Error().stack)
     }
   };
 
@@ -277,19 +279,19 @@
   }
 
   let fetchHook = function (object, name, args) {
-    console.log(`DFKT FETCH HOOK: ${args}`)
+    _c.log(`DFKT FETCH HOOK: ${args}`)
   };
 
   DfktHooks.wrapFunction(window, 'fetch', fetchHook);
   
   let postMessageHook = function (object, name, args) {
-    console.log(`DFKT POSTMESSAGE HOOK: ${args}`)
+    _c.log(`DFKT POSTMESSAGE HOOK: ${args}`)
   };
 
   DfktHooks.wrapFunction(window, 'postMessage', postMessage);
   
   window.addEventListener('message', function (e) {
-    console.log('message received', e)
+    _c.warn('message received', e)
   });
   
   document.body && document.body.addEventListener('click', function (e) {
