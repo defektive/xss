@@ -1,6 +1,6 @@
 # [XSS](https://defektive.github.io/xss/)
 
-Making XSS Great Again.
+Making XSS Experimentation Easy.
 
 ----
 
