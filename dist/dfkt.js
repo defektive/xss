@@ -264,7 +264,7 @@
     if(elHasDfkt) {
       _c.warn(`DFKT HOOK: ${name}`, this, args, new Error().stack)
     } else {
-      _c.log(`DFKT HOOK: ${name}`, this, args, new Error().stack)
+      //_c.log(`DFKT HOOK: ${name}`, this, args, new Error().stack)
     }
   };
 
@@ -285,7 +285,7 @@
   DfktHooks.wrapFunction(window, 'fetch', fetchHook);
   
   let postMessageHook = function (object, name, args) {
-    //_c.log(`DFKT POSTMESSAGE HOOK: ${args}`)
+    _c.log(`DFKT POSTMESSAGE HOOK: ${args}`)
   };
 
   DfktHooks.wrapFunction(window, 'postMessage', postMessageHook);
