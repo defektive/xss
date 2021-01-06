@@ -285,7 +285,7 @@
   DfktHooks.wrapFunction(window, 'fetch', fetchHook);
   
   let postMessageHook = function (object, name, args) {
-    _c.log(`DFKT POSTMESSAGE HOOK: ${args}`)
+    //_c.log(`DFKT POSTMESSAGE HOOK: ${args}`)
   };
 
   DfktHooks.wrapFunction(window, 'postMessage', postMessageHook);
