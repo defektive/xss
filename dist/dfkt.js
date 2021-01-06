@@ -180,7 +180,7 @@
         }
 
         const wrappedSetter = function(value) {
-          if(value.match(/<dd fktv>/)) {
+          if(value && value.match && value.match(/<dd fktv>/)) {
             _c.warn(`DFKT HOOK: ${name}`, this, value, new Error().stack)
           } else {
             _c.log(`DFKT HOOK: ${name}`, this, value, new Error().stack)
