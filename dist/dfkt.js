@@ -183,7 +183,7 @@
           if(value && value.match && value.match(/<dd fktv>/)) {
             _c.warn(`DFKT HOOK: ${name}`, this, value, new Error().stack)
           } else {
-            _c.log(`DFKT HOOK: ${name}`, this, value, new Error().stack)
+            //_c.log(`DFKT HOOK: ${name}`, this, value, new Error().stack)
           }
           return Reflect.apply(originalSetter, this, [value]);
         };
