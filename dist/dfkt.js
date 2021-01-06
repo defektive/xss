@@ -288,7 +288,7 @@
     _c.log(`DFKT POSTMESSAGE HOOK: ${args}`)
   };
 
-  DfktHooks.wrapFunction(window, 'postMessage'); //, postMessage);
+  DfktHooks.wrapFunction(window, 'postMessage', postMessageHook);
   
   window.addEventListener('message', function (e) {
     _c.warn('message received', e)
