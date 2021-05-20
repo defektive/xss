@@ -294,6 +294,10 @@
     _c.warn('message received', e)
   });
   
+  window._dfkt = function (what) {
+    _c.warn(what)
+  }
+  
   document.body && document.body.addEventListener('click', function (e) {
     if (e.detail === 3 && e.ctrlKey) {
       initUI();
