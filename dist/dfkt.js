@@ -248,6 +248,8 @@
       return el && (el.hasAttribute && el.hasAttribute("fktv") || (el.querySelectorAll && el.querySelectorAll('dd[fktv]').length))
     }
 
+    if (!args.length) return
+   
     let targetEl = args[0],
         elHasDfkt = false;
     if (!targetEl.hasAttribute && targetEl.children) {
