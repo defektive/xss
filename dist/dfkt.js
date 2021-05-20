@@ -294,8 +294,8 @@
     _c.warn('message received', e)
   });
   
-  window._dfkt = function (what) {
-    _c.warn(what)
+  window._dfkt = function (what, where) {
+    _c.warn(what, where)
   }
   
   document.body && document.body.addEventListener('click', function (e) {
