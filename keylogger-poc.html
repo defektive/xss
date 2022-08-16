@@ -1,0 +1,22 @@
+<html>
+<body>
+<script>
+  let keys=[];
+  let to;
+
+  function logKeys () {
+    console.log(keys.join(''));
+    keys = [];
+    to = false;
+  }
+
+  document.onkeypress = function(e) {
+    to && clearTimeout(to);
+    let ev = window.event || e;
+    keys.push(String.fromCharCode(e.keyCode || e.charCode));
+
+    to = setTimeout(logKeys, 500);
+  }
+</script>
+</body>
+</html>
